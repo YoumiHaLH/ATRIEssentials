@@ -1,33 +1,35 @@
-#include "mod/MyMod.h"
+
+#include "MyMod.h"
 // #include "mod/ResOutHelper/releaseHelper.h"
 #include "ll/api/mod/RegisterHelper.h"
 #include <memory>
+#include "filesystem"
+#include "Windows.h"
+#include "iostream"
+void LoadMain();
 
 namespace my_mod {
 
 static std::unique_ptr<MyMod> instance;
 
 MyMod& MyMod::getInstance() { return *instance; }
-
+typedef void(_cdecl* enable_)();
+typedef void(_cdecl* disenable_)();
+HMODULE hmoudle_;
 bool MyMod::load() {
-    // BOOL ref = UseCustomResource();
-    // std::cout << "ÊÍ·Å×´Ì¬: " << ref << std::endl;
-    getSelf().getLogger().debug("Loading...");
-    // Code for loading the mod goes here.
+    getSelf().getLogger().title = "\033[0m\033[1;36mATRI\033[31m";
+    LoadMain();
+    hmoudle_ = LoadLibrary(L"plugins/ATRIEssentials/.lib/ATRIEssentialsPluginMainProject.dll");
     return true;
 }
 bool MyMod::enable() {
-    getSelf().getLogger().debug("Enabling...");
-    // Code for enabling the mod goes here.
+    ((enable_)GetProcAddress(hmoudle_, "enable"))();
     return true;
 }
 
 bool MyMod::disable() {
-    getSelf().getLogger().debug("Disabling...");
-    // Code for disabling the mod goes here.
+    ((disenable_)GetProcAddress(hmoudle_, "disable"))();
     return true;
 }
-
-} // namespace my_mod
-
+}
 LL_REGISTER_MOD(my_mod::MyMod, my_mod::instance);

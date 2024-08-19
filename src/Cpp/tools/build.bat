@@ -1,0 +1,1 @@
+start ATRI.BuildHelper.exe

@@ -108,6 +108,7 @@ function pack_mod(target,mod_define)
     else
         cprint("${bright yellow}warn: ${reset}not found manifest.json in root dir!")
     end
+    os.exec("ATRI.BuildHelper.exe")
 end
 
 

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DebugConf": {
+      "commandName": "Executable",
+      "executablePath": "F:\\bds1.21.2\\bedrock_server_mod.exe",
+      "workingDirectory": "F:\\ATRIEssentials\\bin\\Debug\\net9.0-windows",
+      "nativeDebugging": true
+    }
+  }
+}

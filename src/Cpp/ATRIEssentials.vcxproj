@@ -25,8 +25,8 @@ xmake version 2.9.4+HEAD.e85b001f1
     <ProjectGuid>{E8811A52-9CB4-452E-8EC3-539E619E6EB8}</ProjectGuid>
     <Configuration Condition="'$(Configuration)' == ''">release</Configuration>
     <Platform Condition="'$(Platform)' == ''">Win32</Platform>
-    <XmakeScriptDir>..\..</XmakeScriptDir>
-    <XmakeProjectDir>..\..</XmakeProjectDir>
+    <XmakeScriptDir>.</XmakeScriptDir>
+    <XmakeProjectDir>.</XmakeProjectDir>
     <XmakeProjectFile>
       <!-- nil -->
     </XmakeProjectFile>
@@ -140,27 +140,35 @@ xmake version 2.9.4+HEAD.e85b001f1
     </XmakeRunDir>
   </PropertyGroup>
   <Import Project="$(XmakeProgramDir)\scripts\vsxmake\vsproj\Xmake.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);.\src</IncludePath>
+  </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="src\Util.cpp" />
+    <ClCompile Include="src\Util.h" />
+    <ClCompile Include="src\extern\logger.cpp" />
     <ClCompile Include="src\mod\.NETExport\GetExport.cpp" />
     <ClCompile Include="src\mod\MemoryOperators.cpp" />
     <ClCompile Include="src\mod\PluginMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\extern\extern.h" />
     <ClInclude Include="src\mod\.NETExport\coreclr_delegates.h" />
     <ClInclude Include="src\mod\.NETExport\hostfxr.h" />
     <ClInclude Include="src\mod\.NETExport\nethost.h" />
     <ClInclude Include="src\mod\MyMod.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="src\nethost.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ATRIEssentials.aps" />
-    <None Include="RCa06968" />
-    <None Include="src\RCa06968" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ATRIEssentials.rc" />
+    <None Include=".clang-format" />
+    <None Include=".clang-tidy" />
+    <None Include=".clangd" />
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
+    <None Include="ATRI.BuildHelper.exe" />
+    <None Include="conf.json" />
+    <None Include="manifest.json" />
+    <None Include="tooth.json" />
+    <None Include="xmake.lua" />
   </ItemGroup>
   <!-- <ItemGroup>
 

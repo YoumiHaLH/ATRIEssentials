@@ -1,15 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmssZ"))</SourceRevisionId>
+	  <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <PropertyGroup>
-    <DllExportIdent>6BAA7ADE-3665-4D2B-9581-E970C84FD8B7</DllExportIdent>
+    <PlatformTarget>x64</PlatformTarget>
+    <BaseOutputPath>..\..\bin</BaseOutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DllExportIdent>436497E2-7AA2-489E-A763-B99F1EB20167</DllExportIdent>
     <DllExportMetaLibName>DllExport.dll</DllExportMetaLibName>
     <DllExportNamespace>System.Runtime.InteropServices</DllExportNamespace>
     <DllExportDDNSCecil>true</DllExportDDNSCecil>
-    <PlatformTarget>x64</PlatformTarget>
+    <DllExportSkipOnAnyCpu>false</DllExportSkipOnAnyCpu>
+    <DllExportPlatform>Auto</DllExportPlatform>
     <DllExportOrdinalsBase>1</DllExportOrdinalsBase>
     <DllExportGenExpLib>false</DllExportGenExpLib>
     <DllExportOurILAsm>false</DllExportOurILAsm>
@@ -20,16 +27,30 @@
     <DllExportPatches>0</DllExportPatches>
     <DllExportPreProcType>0</DllExportPreProcType>
     <DllExportPostProcType>0</DllExportPostProcType>
-    <BaseOutputPath>..\..\bin</BaseOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Conari" Version="1.5.0" />
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles;compile; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="DllExport">
       <Version>1.7.4</Version>
       <Visible>false</Visible>
       <Wz>1</Wz>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Colorful.Console">
+      <HintPath>..\..\lib\Colorful.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="..\..\ATRI.BuildHelper.exe" />
+  </Target>
   <ImportGroup Label=".NET DllExport">
     <Import Project="$(SolutionDir)packages\DllExport.1.7.4\tools\net.r_eg.DllExport.targets" Condition="Exists($([MSBuild]::Escape('$(SolutionDir)packages\DllExport.1.7.4\tools\net.r_eg.DllExport.targets')))" Label="8337224c9ad9e356" />
   </ImportGroup>
