@@ -3,36 +3,43 @@
     <TargetFramework>net9.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmssZ"))</SourceRevisionId>
-	  <Platforms>AnyCPU;x64</Platforms>
+    <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmssZ"))</SourceRevisionId>
+    <Platforms>x64</Platforms>
+	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	  <DefineConstants>LL</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <PlatformTarget>x64</PlatformTarget>
     <BaseOutputPath>..\..\bin</BaseOutputPath>
   </PropertyGroup>
+  <PropertyGroup Label="8337224c9ad9e356:PreProc">
+    <CopyLocalLockFileAssemblies Condition="$(TargetFramework.StartsWith('netc')) Or $(TargetFramework.StartsWith('nets'))" Label="8337224c9ad9e356:PreProc">true</CopyLocalLockFileAssemblies>
+    <DebugType Condition="'$(DebugType)'!='full' And '$(DebugType)'!='pdbonly'" Label="8337224c9ad9e356:PreProc">pdbonly</DebugType>
+  </PropertyGroup>
   <PropertyGroup>
-    <DllExportIdent>436497E2-7AA2-489E-A763-B99F1EB20167</DllExportIdent>
+    <DllExportIdent>8D4F3F86-8457-4E1F-96C7-677D387E2668</DllExportIdent>
     <DllExportMetaLibName>DllExport.dll</DllExportMetaLibName>
     <DllExportNamespace>System.Runtime.InteropServices</DllExportNamespace>
-    <DllExportDDNSCecil>true</DllExportDDNSCecil>
-    <DllExportSkipOnAnyCpu>false</DllExportSkipOnAnyCpu>
-    <DllExportPlatform>Auto</DllExportPlatform>
+    <DllExportDDNSCecil>false</DllExportDDNSCecil>
+    <PlatformTarget>x64</PlatformTarget>
     <DllExportOrdinalsBase>1</DllExportOrdinalsBase>
     <DllExportGenExpLib>false</DllExportGenExpLib>
     <DllExportOurILAsm>false</DllExportOurILAsm>
-    <DllExportSysObjRebase>false</DllExportSysObjRebase>
+    <DllExportSysObjRebase>true</DllExportSysObjRebase>
     <DllExportLeaveIntermediateFiles>false</DllExportLeaveIntermediateFiles>
     <DllExportTimeout>30000</DllExportTimeout>
-    <DllExportPeCheck>2</DllExportPeCheck>
-    <DllExportPatches>0</DllExportPatches>
-    <DllExportPreProcType>0</DllExportPreProcType>
-    <DllExportPostProcType>0</DllExportPostProcType>
+    <DllExportPeCheck>1</DllExportPeCheck>
+    <DllExportPatches>3</DllExportPatches>
+    <DllExportPreProcType>27</DllExportPreProcType>
+    <DllExportILMerge />
+    <DllExportPostProcType>2</DllExportPostProcType>
+    <DllExportProcEnv>$(SolutionPath);$(MSBuildThisFileFullPath);TargetDir</DllExportProcEnv>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Conari" Version="1.5.0" />
     <PackageReference Include="Costura.Fody" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles;compile; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets>runtime; build; native;compile; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="DllExport">
       <Version>1.7.4</Version>
@@ -48,9 +55,27 @@
       <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EndStoneAPi\ENDAPI\" />
+    <Folder Include="EndStoneAPi\ENDMCAPI\" />
+    <Folder Include="LLApi\LL\" />
+    <Folder Include="UpdateTools\" />
+    <Folder Include="Utils\Hook\" />
+  </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="..\..\ATRI.BuildHelper.exe" />
   </Target>
+  <Target Name="DllExportPreProc" BeforeTargets="DllExportMod" Label="8337224c9ad9e356:PreProc">
+    <Copy SourceFiles="$(DllExportMetaLibFullPath)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
+    <Exec Condition="'$(IsNetCoreBased)'!='true'" Command="$(ILMergeConsolePath) Conari.dll $(TargetFileName) /out:$(TargetFileName).ilm0.dll" WorkingDirectory="$(TargetDir)" ContinueOnError="true" />
+    <Exec Condition="'$(IsNetCoreBased)'=='true'" Command="$(ILMergeConsolePath) Conari.dll Microsoft.CSharp.dll System.Reflection.Emit.dll System.Reflection.Emit.ILGeneration.dll System.Reflection.Emit.Lightweight.dll $(TargetFileName) /out:$(TargetFileName).ilm0.dll" WorkingDirectory="$(TargetDir)" ContinueOnError="true" />
+    <Move SourceFiles="$(TargetDir)$(TargetFileName).ilm0.dll" DestinationFiles="$(TargetDir)$(TargetFileName)" OverwriteReadOnlyFiles="true" ContinueOnError="true" />
+    <Delete Files="$(TargetDir)$(DllExportMetaLibName)" ContinueOnError="true" />
+  </Target>
+  <Target Name="DllExportPreProcAfter" AfterTargets="DllExportMod" Label="8337224c9ad9e356:PreProc">
+    <Delete Files="$(TargetDir)$(TargetFileName).ilm0.pdb" ContinueOnError="true" />
+  </Target>
+  <Target Name="DllExportPostProc" Label="8337224c9ad9e356:PostProc" />
   <ImportGroup Label=".NET DllExport">
     <Import Project="$(SolutionDir)packages\DllExport.1.7.4\tools\net.r_eg.DllExport.targets" Condition="Exists($([MSBuild]::Escape('$(SolutionDir)packages\DllExport.1.7.4\tools\net.r_eg.DllExport.targets')))" Label="8337224c9ad9e356" />
   </ImportGroup>

@@ -14,35 +14,32 @@ namespace ATRIEssentialsPluginMainProject.Logger
 {
     internal static class logger
     {
-        [DllImport("ATRIEssentials.dll")]
-        private extern static void info(byte[] bytes);
-        [DllImport("ATRIEssentials.dll")]
-        private extern static void error(byte[] bytes);
-        [DllImport("ATRIEssentials.dll")]
-        private extern static void warn(byte[] bytes);
+#if LL
+        private static ILogger logger_ = new LLogger();
+#elif END
+        private static ILogger logger_ = new ENDLogger();
+#elif BDSX
+        private static ILogger logger_ = new BDSXLogger();
+#endif
 
-        /// <summary>
-        /// INFO
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="text"></param>
         public static void info<T>(T text)
         {
-            info(text.ToString().GetBytes());
+            logger_.info_(text.ToString().GetBytes());
         }
 
         public static void error<T>(T text)
         {
-            error(text.ToString().GetBytes());
+            logger_.error_(text.ToString().GetBytes());
         }
 
         public static void warn<T>(T text)
         {
-            warn(text.ToString().GetBytes());
+            logger_.error_(text.ToString().GetBytes());
         }
         public static byte[] GetBytes(this string in_)
         {
             return Encoding.UTF8.GetBytes(in_);
         }
+       
     }
 }

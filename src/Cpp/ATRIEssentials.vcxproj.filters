@@ -32,6 +32,8 @@ xmake version 2.9.4+HEAD.e85b001f1
     <ClCompile Include="src\extern\logger.cpp" />
     <ClCompile Include="src\Util.h" />
     <ClCompile Include="src\Util.cpp" />
+    <ClCompile Include="src\extern\commands.cpp" />
+    <ClCompile Include="src\extern\Form.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mod\MyMod.h" />

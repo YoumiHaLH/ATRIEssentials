@@ -22,15 +22,10 @@ namespace ATRIEssentialsPluginMainProject.i18n
 
         public static void InitI18n()
         {
-            var currentCultureName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-            if (!lang.Equals(currentCultureName))
-            {
-                Plugins_Language = "en_US";
-            }
-            else
-            {
+            var currentCultureName = System.Threading.Thread.CurrentThread.CurrentCulture.Name.Replace("-","_");
+           
                 Plugins_Language = currentCultureName;
-            }
+            
 
            ///Todo: 释放语言文件
             if (!Directory.Exists(Path.language))
@@ -63,31 +58,44 @@ namespace ATRIEssentialsPluginMainProject.i18n
             }
             return strs;
         }
-        public static string Get(string str)
+        public static string Get(string str, params object?[] stras)
         {
             Dictionary<string, string> strs = new Dictionary<string, string>();
             var tryGetValue = lang.TryGetValue(Plugins_Language, out strs);
+            
             if (!tryGetValue)
             {
                 return str;
             }
             else
             {
-                return strs[str];
+                var equals = strs.TryGetValue(str,out string aValue);
+                if (equals)
+                return string.Format(aValue,stras);
+                else
+                {
+                    return str;
+                }
             }
         }
 
-        public static string Get(string str, string language)
+        public static string Get(string str, string language,params object?[] stras)
         {
             Dictionary<string, string> strs = new Dictionary<string, string>();
-            var tryGetValue = lang.TryGetValue(str, out strs);
+            var tryGetValue = lang.TryGetValue(language, out strs);
             if (!tryGetValue)
             {
                 return str;
             }
             else
             {
-                return strs[str];
+                var equals = strs.TryGetValue(str, out string aValue);
+                if (equals)
+                    return string.Format(aValue, stras);
+                else
+                {
+                    return str;
+                }
             }
         }
 

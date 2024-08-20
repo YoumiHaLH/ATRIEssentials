@@ -17,9 +17,9 @@ typedef void(_cdecl* enable_)();
 typedef void(_cdecl* disenable_)();
 HMODULE hmoudle_;
 bool MyMod::load() {
-    getSelf().getLogger().title = "\033[0m\033[1;36mATRI\033[31m";
+    getSelf().getLogger().title = "\033[0m\033[1;36mATRI\033[0m";
     LoadMain();
-    hmoudle_ = LoadLibrary(L"plugins/ATRIEssentials/.lib/ATRIEssentialsPluginMainProject.dll");
+    hmoudle_ = GetModuleHandle(L"ATRIEssentialsPluginMainProject.dll");
     return true;
 }
 bool MyMod::enable() {
