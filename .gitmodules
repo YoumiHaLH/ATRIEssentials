@@ -1,0 +1,3 @@
+[submodule "src/Cpp_Endstone/endstone_include"]
+	path = src/Cpp_Endstone/endstone_include
+	url = https://github.com/EndstoneMC/endstone.git
