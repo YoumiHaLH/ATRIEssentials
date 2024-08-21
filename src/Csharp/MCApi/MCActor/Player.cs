@@ -11,6 +11,7 @@ namespace ATRIEssentialsPluginMainProject.MCApi.MCActor
         
         public Player(IntPtr ptr) : base(ptr)
         {
+
         }
     }
 }
