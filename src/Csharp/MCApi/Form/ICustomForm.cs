@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using ATRIEssentialsPluginMainProject.MCApi.Commands;
 
-namespace ATRIEssentialsPluginMainProject.MCApi.Form
+namespace ATRIEssentialsPluginMainProject.MCApi.Form.Custom
 {
     internal interface ICustomForm
     {

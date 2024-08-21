@@ -33,7 +33,8 @@ xmake version 2.9.4+HEAD.e85b001f1
     <ClCompile Include="src\Util.h" />
     <ClCompile Include="src\Util.cpp" />
     <ClCompile Include="src\extern\commands.cpp" />
-    <ClCompile Include="src\extern\Form.cpp" />
+    <ClCompile Include="src\extern\Form_Custom.cpp" />
+    <ClCompile Include="src\extern\Form_Simple.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mod\MyMod.h" />

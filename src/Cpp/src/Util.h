@@ -1,2 +1,4 @@
 #pragma once
-char* wide_Char_To_Multi_Byte( const wchar_t* pWCStrKey);
+#include <string>
+#define _C(wcharStr) (WcharToChar(wcharStr))
+std::string WcharToChar(const wchar_t* wcharStr);

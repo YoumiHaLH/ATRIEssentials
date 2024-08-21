@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using ATRIEssentials;
 using ATRIEssentialsPluginMainProject.Logger;
 using ATRIEssentialsPluginMainProject.MCApi.Commands;
-using ATRIEssentialsPluginMainProject.MCApi.Form;
-using ATRIEssentialsPluginMainProject.Utils;
+using ATRIEssentialsPluginMainProject.MCApi.Form.Custom;
+using ATRIEssentialsPluginMainProject.MCApi.MCActor;
 
 namespace ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Form
 {
@@ -20,9 +20,7 @@ namespace ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Form
 
         [DllImport("ATRIEssentials.dll")]
         private extern static void SendTo_(IntPtr ptr,IntPtr ptr2, CallBack call);
-        [DllImport("ATRIEssentials.dll")]
-        private extern static void addDropdown(IntPtr ptr, byte[] name, byte[] text, byte[][] bytes,int len);
-
+      
         private IntPtr ptr;
         public Custom()
         {
@@ -35,34 +33,35 @@ namespace ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Form
 
         public void setTiTle(string text)
         {
-            PluginMain.dll.setTitle(ptr,text);
+            PluginMain.dll.setTitle(ptr,new NativeString<WCharPtr>(text));
         }
 
         public void addLabel(string text)
         {
-            PluginMain.dll.addLabel(ptr,text);
+            PluginMain.dll.addLabel(ptr,new NativeString<WCharPtr>(text));
         }
 
         public void addInput(string name, string text, string tip, string defaultvaule)
         {
-            PluginMain.dll.addInput(ptr,name,text,tip,defaultvaule);
+            PluginMain.dll.addInput(ptr,new NativeString<WCharPtr>(name),new NativeString<WCharPtr>(text),new NativeString<WCharPtr>(tip),new NativeString<WCharPtr>(defaultvaule));
         }
 
         public void addSwitch(string name, string text, bool IsOpen)
         {
-            PluginMain.dll.addSwitch(ptr, name, text, IsOpen);
+            PluginMain.dll.addSwitch(ptr, new NativeString<WCharPtr>(name), new NativeString<WCharPtr>(text), IsOpen);
         }
 
         public void addDropdown(string name, string text,string[] parmstr)
         {
-            List<byte[]> by = new List<byte[]>();
-            foreach (var s in parmstr)
-            {
-                by.Add(s.GetBytes());
-            }
-           addDropdown(ptr,name.GetBytes(),text.GetBytes(),by.ToArray(),parmstr.Length);
+            
+            PluginMain.dll.addDropdown(ptr,new NativeString<WCharPtr>(name),new NativeString<WCharPtr>(text),new UnmanagedStringArray<WCharPtr>(parmstr),parmstr.Length);
+            // addDropdown(ptr,name.GetBytes(),new NativeString<by>(),by.ToArray(),parmstr.Length);
         }
-
+        private string UnicodeToUTF8(string strFrom)
+        {
+            byte[] bytes = Encoding.Default.GetBytes(strFrom);
+            return Encoding.UTF8.GetString(bytes);
+        }
         public void SendTo(IntPtr ptr,CallBack back)
         {
              SendTo_(this.ptr,ptr, back);

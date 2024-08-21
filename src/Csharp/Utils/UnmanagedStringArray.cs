@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ATRIEssentialsPluginMainProject.Logger;
 
-namespace ATRIEssentialsPluginMainProject.Utils
+namespace net.r_eg.Conari.Types
 {
-    internal class UnmanagedStringArray : NativeArray<nint>
+    internal class UnmanagedStringArray<T> :  NativeArray<nint> where T : struct
     {
         private IntPtr[] ptrArray;
         public UnmanagedStringArray(string[] strArray)
@@ -16,15 +17,15 @@ namespace ATRIEssentialsPluginMainProject.Utils
                 throw new Exception("String Array Can't have 0 members");
             }
             ptrArray = new IntPtr[strArray.Length];
-
+           
             for (int i = 0; i < strArray.Length; i++)
             {
-                ptrArray[i] = Marshal.StringToHGlobalAnsi(strArray[i]);
+                var nativeString = new NativeString<T>(strArray[i]);
+                ptrArray[i] = nativeString.AddressPtr;
             }
             WriteLength(ptrArray.Length);
             memory.write(ptrArray);
         }
-
         private void WriteLength(int length)
         {
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));

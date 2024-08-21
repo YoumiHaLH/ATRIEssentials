@@ -11,7 +11,8 @@ using System.Net.Http.Json;
 using ATRIEssentialsPluginMainProject.i18n;
 using ATRIEssentialsPluginMainProject.MCApi.Commands;
 using ATRIEssentialsPluginMainProject.MCApi.Form;
-using ATRIEssentialsPluginMainProject.Utils;
+using ATRIEssentialsPluginMainProject.MCApi.Form.Custom;
+using ATRIEssentialsPluginMainProject.MCApi.MCActor;
 using Newtonsoft.Json;
 using Path = System.Path;
 using Config =  ATRIEssentialsPluginMainProject.Config.Config;
@@ -28,9 +29,9 @@ namespace ATRIEssentials
         public static string GameVersion = "1.21.2";
         public static string auother = "YoumiHa";
         public static Config? cfg { get; set; }
+
         public static int load(IntPtr arg, int argLength)
         {
-            
             try
             {
                 int consoleWidth = Console.WindowWidth;
@@ -60,7 +61,7 @@ namespace ATRIEssentials
                 }
                 LoadLibs();                                                                   
                 i18n.InitI18n();
-               cfg =  LoadConfig();
+                cfg =  LoadConfig();
             }
             catch (Exception e)
             {
@@ -77,7 +78,7 @@ namespace ATRIEssentials
             var serializeObject_d = JsonConvert.SerializeObject(cfg_d);
             File.Create(Path.config).Dispose();
             File.WriteAllText(Path.config, serializeObject_d);
-            return cfg;
+            return cfg_d;
 #endif
             if (!File.Exists(Path.config))
             {
@@ -118,20 +119,38 @@ namespace ATRIEssentials
                 var isPlayer = ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Command.Command.isPlayer(ref a);
                 if (isPlayer)
                 {
-                    Custom ct = new Custom();
-                    ct.setTiTle("1");
-                    ct.addLabel("2");
-                    ct.addDropdown("name", "原神", ["1"]);
-                    ct.addSwitch("na", "test", true);
-                    var player = ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Command.Command.GetPlayer(ref a);
-                    ct.sendTo(player,(ref IntPtr a, ref IntPtr b) =>
-                    {
-                        Console.WriteLine("1");
-                    });
+                    //var custom = new Custom();
+                    //custom.setTiTle("1");
+                    //custom.sendTo(ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Command.Command.GetPlayer_( a), (ref IntPtr a,ref IntPtr b) =>
+                    //{
 
+                    //});
+                    //var custom = new Custom();
+                    //custom.setTiTle("1");
+                    //Player pl = ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Command.Command.GetPlayer_(ref a);
+                    //custom.sendTo(pl, (ref IntPtr a, ref IntPtr b) =>
+                    //{
+
+                    //});
+
+                    var simpleForm = new SimpleForm();
+                    simpleForm.setTitle("title");
+                    simpleForm.addButton("猿神", (ref IntPtr player) =>
+                    {
+
+
+                    });
+                    var player1 = ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Command.Command.GetPlayer_(ref a);
+                    var pl = player1;
+                    simpleForm.SendTo(player1);
                 }
-                Console.WriteLine(isPlayer);
             }));
+            CommandRegister.RegisterCommand("atri","ATRIQWQ",ICommands.CommandLevel.Any,(
+                (ref IntPtr orgin, ref IntPtr output) =>
+                {
+                    logger.info(ATRI.Text);
+                    logger.info("Basic on .NET9.0");
+                } ));
         }
 
         [DllExport]

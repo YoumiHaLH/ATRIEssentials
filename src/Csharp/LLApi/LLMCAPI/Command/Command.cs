@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ATRIEssentialsPluginMainProject.Logger;
 using ATRIEssentialsPluginMainProject.MCApi.Commands;
+using ATRIEssentialsPluginMainProject.MCApi.MCActor;
 
 namespace ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Command
 {
@@ -16,7 +17,7 @@ namespace ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Command
         [DllImport("ATRIEssentials.dll")]
         public static extern bool isPlayer(ref IntPtr ptr);
         [DllImport("ATRIEssentials.dll")]
-        public static extern IntPtr GetPlayer(ref IntPtr ptr);
+       public static extern IntPtr GetPlayer(ref IntPtr ptr);
         public void RegisterCommand(string text, string describes, CallBack back,ICommands.CommandLevel level)
         {
             RegisterCommand(text.GetBytes(),describes.GetBytes(),(int)level,back);
@@ -26,6 +27,10 @@ namespace ATRIEssentialsPluginMainProject.LLApi.LLMCAPI.Command
         {
             throw new NotImplementedException();
         }
-        
+
+        public static Player GetPlayer_(ref IntPtr ptr)
+        {
+            return new Player( GetPlayer(ref ptr));
+        }
     }
 }

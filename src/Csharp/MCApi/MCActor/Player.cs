@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ATRIEssentialsPluginMainProject.MCApi.MCActor
 {
-    internal class Mob : Actor
+    internal class Player : Mob
     {
-        public Mob(nint ptr) : base(ptr)
+        
+        public Player(IntPtr ptr) : base(ptr)
         {
-
         }
     }
 }

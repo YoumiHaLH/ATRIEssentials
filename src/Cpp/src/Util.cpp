@@ -1,14 +1,14 @@
 #include "Util.h"
 #include "Windows.h"
 #include "extern/extern.h"
-
 #include <vector>
-char* wide_Char_To_Multi_Byte(const wchar_t* pWCStrKey) {
-    int   pSize    = WideCharToMultiByte(CP_OEMCP, 0, pWCStrKey, wcslen(pWCStrKey), NULL, 0, NULL, NULL);
-    char* pCStrKey = new char[pSize + 1];
-    WideCharToMultiByte(CP_OEMCP, 0, pWCStrKey, wcslen(pWCStrKey), pCStrKey, pSize, NULL, NULL);
-    pCStrKey[pSize] = '\0';
-    return pCStrKey;
+std::string WcharToChar(const wchar_t* wcharStr) {
+    int bufferSize = WideCharToMultiByte(CP_UTF8, 0, wcharStr, -1, nullptr, 0, nullptr, nullptr);
+    if (bufferSize == 0) {
+        return "";
+    }
+    std::string charStr(bufferSize, 0);
+    WideCharToMultiByte(CP_UTF8, 0, wcharStr, -1, &charStr[0], bufferSize, nullptr, nullptr);
+    return charStr;
 }
-extern "C"{
-}
+

@@ -5,8 +5,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ATRIEssentialsPluginMainProject.MCApi.Commands;
+using ATRIEssentialsPluginMainProject.MCApi.MCActor;
 
-namespace ATRIEssentialsPluginMainProject.MCApi.Form
+namespace ATRIEssentialsPluginMainProject.MCApi.Form.Custom
 {
     internal class Custom
     {
@@ -51,9 +52,9 @@ namespace ATRIEssentialsPluginMainProject.MCApi.Form
 
         }
 
-        public void sendTo(IntPtr ptr,CallBack back)
+        public void sendTo(Player ptr,CallBack back)
         {
-            custom.SendTo(ptr,back);
+            custom.SendTo(ptr.ptr,back);
         }
     }
 }
