@@ -1,5 +1,5 @@
-// Copyright (c) 2024, The Endstone Project. (https://endstone.dev) All Rights Reserved.
-
+﻿// Copyright (c) 2024, The Endstone Project. (https://endstone.dev) All Rights Reserved.
+#include "Util.h"
 #include "example_listener.h"
 #include "fibonacci_command.h"
 #include <endstone/color_format.h>
@@ -14,7 +14,7 @@ class ExamplePlugin : public endstone::Plugin {
 public:
     void onLoad() override
     {
-        getLogger().info("onLoad is called");
+        getLogger().info(_C(L"猿神"));
     }
 
     void onEnable() override

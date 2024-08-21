@@ -1,4 +1,4 @@
-// Copyright (c) 2024, The Endstone Project. (https://endstone.dev) All Rights Reserved.
+﻿// Copyright (c) 2024, The Endstone Project. (https://endstone.dev) All Rights Reserved.
 
 #include "example_plugin.h"
 
